@@ -58,70 +58,71 @@ class Elementor_Tabslider_Widget extends \Elementor\Widget_Base
             ]
         );
 
- // Tabs Repeater
-$this->add_control(
-    'tabs',
-    [
-        'label' => __('Tabs', 'custom-tab'),
-        'type' => \Elementor\Controls_Manager::REPEATER,
-        'fields' => [
+        // Tabs Repeater
+        $this->add_control(
+            'tabs',
             [
-                'name' => 'tab_title',
-                'label' => __('Title', 'custom-tab'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Tab Title', 'custom-tab'),
-            ],
-            [
-                'name' => 'tab_content',
-                'label' => __('Content', 'custom-tab'),
-                'type' => \Elementor\Controls_Manager::TEXTAREA,
-                'default' => __('Tab Content', 'custom-tab'),
-            ],
-            [
-                'name' => 'media_type',
-                'label' => __('Media Type', 'custom-tab'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => 'image',
-                'options' => [
-                    'image' => __('Image', 'custom-tab'),
-                    'video' => __('Video', 'custom-tab'),
+                'label' => __('Tabs', 'custom-tab'),
+                'type' => \Elementor\Controls_Manager::REPEATER,
+                'fields' => [
+                    [
+                        'name' => 'tab_title',
+                        'label' => __('Title', 'custom-tab'),
+                        'type' => \Elementor\Controls_Manager::TEXT,
+                        'default' => __('Tab Title', 'custom-tab'),
+                    ],
+                    [
+                        'name' => 'tab_content',
+                        'label' => __('Content', 'custom-tab'),
+                        'type' => \Elementor\Controls_Manager::TEXTAREA,
+                        'default' => __('Tab Content', 'custom-tab'),
+                    ],
+                    [
+                        'name' => 'media_type',
+                        'label' => __('Media Type', 'custom-tab'),
+                        'type' => \Elementor\Controls_Manager::SELECT,
+                        'default' => 'image',
+                        'options' => [
+                            'image' => __('Image', 'custom-tab'),
+                            'video' => __('Video', 'custom-tab'),
+                        ],
+                    ],
+                    [
+                        'name' => 'tab_image',
+                        'label' => __('Image', 'custom-tab'),
+                        'type' => \Elementor\Controls_Manager::MEDIA,
+                        'media_type' => 'image',
+                        'default' => [
+                            'url' => \Elementor\Utils::get_placeholder_image_src(),
+                        ],
+                        'condition' => [
+                            'media_type' => 'image',
+                        ],
+                    ],
+                    [
+                        'name' => 'tab_video',
+                        'label' => __('Video URL', 'custom-tab'),
+                        'type' => \Elementor\Controls_Manager::TEXT,
+                        'description' => __('Enter the video URL (YouTube, Vimeo, etc.). Use the embed link for YouTube.', 'custom-tab'),
+                        'placeholder' => __('https://www.youtube.com/embed/video_id', 'custom-tab'),
+                        'condition' => [
+                            'media_type' => 'video',
+                        ],
+                    ],
+                    
+                    [
+                        'name' => 'tab_icon', // New control for the icon
+                        'label' => __('Icon', 'custom-tab'),
+                        'type' => \Elementor\Controls_Manager::MEDIA,
+                        'media_type' => 'image', // You can specify this to ensure it only accepts images
+                        'default' => [
+                            'url' => \Elementor\Utils::get_placeholder_image_src(),
+                        ],
+                    ],
                 ],
-            ],
-            [
-                'name' => 'tab_image',
-                'label' => __('Image', 'custom-tab'),
-                'type' => \Elementor\Controls_Manager::MEDIA,
-                'media_type' => 'image',
-                'default' => [
-                    'url' => \Elementor\Utils::get_placeholder_image_src(),
-                ],
-                'condition' => [
-                    'media_type' => 'image',
-                ],
-            ],
-            [
-                'name' => 'tab_video',
-                'label' => __('Video URL', 'custom-tab'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'description' => __('Enter the video URL (YouTube, Vimeo, etc.)', 'custom-tab'),
-                'placeholder' => __('https://your-video-url.com', 'custom-tab'),
-                'condition' => [
-                    'media_type' => 'video',
-                ],
-            ],
-            [
-                'name' => 'tab_icon', // New control for the icon
-                'label' => __('Icon', 'custom-tab'),
-                'type' => \Elementor\Controls_Manager::MEDIA,
-                'media_type' => 'image', // You can specify this to ensure it only accepts images
-                'default' => [
-                    'url' => \Elementor\Utils::get_placeholder_image_src(),
-                ],
-            ],
-        ],
-        'title_field' => '{{{ tab_title }}}',
-    ]
-);
+                'title_field' => '{{{ tab_title }}}',
+            ]
+        );
 
 
 
@@ -444,9 +445,21 @@ $this->add_control(
                                         <img width="600" height="400" src="<?php echo esc_url($tab['tab_image']['url']); ?>" class="feature-img" alt="Feature Image <?php echo $index + 1; ?>">
                                     <?php elseif ('video' === $tab['media_type']) : ?>
                                         <div class="feature-video">
-                                            <iframe width="600" height="400" src="<?php echo esc_url($tab['tab_video']); ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            <?php
+                                            // Check if the video URL is not empty and format it for embedding
+                                            $video_url = esc_url($tab['tab_video']);
+
+                                            // Extract the video ID from the URL if it's a standard YouTube URL
+                                            if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $video_url, $matches)) {
+                                                $video_id = $matches[1];
+                                                // Construct the embed URL
+                                                $video_url = 'https://www.youtube.com/embed/' . $video_id;
+                                            }
+                                            ?>
+                                            <iframe width="600" height="400" src="<?php echo $video_url; ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                         </div>
                                     <?php endif; ?>
+
                                 </div>
                             </div>
                         <?php endforeach; ?>

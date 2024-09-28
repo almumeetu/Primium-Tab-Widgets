@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Plugin Name: Elementor Custom Tab
+ * Plugin Name: Primium TabSlider Widget
  * Description: Custom Elementor extension which includes custom widgets.
  * Plugin URL: https://example.com
  * Version: 1.0.0
- * Author: Saikat
+ * Author: Al Mumeetu Saikat
  * Text Domain: custom-tab
  * Domain Path: /languages
  */
