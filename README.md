@@ -1,5 +1,7 @@
 Primium-Tab-Widgets
+
 Primium-Tab-Widgets is a premium WordPress plugin personally developed by me, designed to provide a sleek and modern tabbed widget with dynamic content integration. This widget enhances your website's functionality and aesthetics, making it ideal for displaying a variety of content types in a stylish format.
+
 
 Key Features:
 Premium Design: Offers a visually appealing, modern interface that enhances your website's overall design.
