@@ -35,7 +35,6 @@
 
 .features-tabs {
     flex-grow: 1;
-    height: 400px;
     overflow: hidden;
     width: 50%;
     /* Adjusted to take half the width */
