@@ -447,7 +447,8 @@ class Elementor_Tabslider_Widget extends \Elementor\Widget_Base
                                         <div class="feature-video">
                                             <?php
                                             // Check if the video URL is not empty and format it for embedding
-                                            $video_url = esc_url($tab['tab_video']);
+                                            $video_url = is_string($tab['tab_video']) ? esc_url($tab['tab_video']) : ''; // Ensure it's a string before escaping
+
 
                                             // Extract the video ID from the URL if it's a standard YouTube URL
                                             if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $video_url, $matches)) {
