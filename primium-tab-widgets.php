@@ -147,6 +147,7 @@ final class Elementor_Custom_Tab
         printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
     }
 
+    //Minimum Elementor Version
     public function admin_notice_minimum_elementor_version()
     {
         $message = sprintf(
@@ -158,6 +159,7 @@ final class Elementor_Custom_Tab
         printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
     }
 
+    //Minimum Php version
     public function admin_notice_minimum_php_version()
     {
         $message = sprintf(
